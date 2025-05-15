@@ -4,6 +4,7 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { isValidObjectId, Model } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 @Injectable()
 export class PokemonService {
   constructor(
@@ -21,9 +22,10 @@ export class PokemonService {
     }
   }
 
-  findAll() {
+  findAll(queryParams:PaginationDto) {
+    const {limit=10 , offset=0} = queryParams;
     try{
-      let PokemonAll = this.pokemonModel.find();
+      let PokemonAll = this.pokemonModel.find().limit(queryParams.limit).skip(queryParams.offset).sort({no:1}).select('-__v');
       if(!PokemonAll){
         throw new NotFoundException('No Pokemon found');
       };
@@ -59,7 +61,7 @@ export class PokemonService {
       await pokemon.updateOne(updatePokemonDto,{new:true});
       return {...pokemon.toJSON(),...updatePokemonDto};
     }catch(error){
-     this.handleExceptions(error)
+      this.handleExceptions(error)
     }
     
   }
