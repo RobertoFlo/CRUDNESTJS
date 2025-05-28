@@ -5,12 +5,17 @@ import { isValidObjectId, Model } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class PokemonService {
+  private defaultLimit: number;
   constructor(
     @InjectModel(Pokemon.name)
     private readonly pokemonModel: Model<Pokemon>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+   
+  }
 
   async create(createPokemonDto: CreatePokemonDto) {
     try{
@@ -23,9 +28,12 @@ export class PokemonService {
   }
 
   findAll(queryParams:PaginationDto) {
-    const {limit=10 , offset=0} = queryParams;
+    this.defaultLimit = this.configService.get<number>('defaultLimit');
+    const {limit = this.defaultLimit, offset = 0} = queryParams;
+   // const {limit=10 , offset=0} = queryParams;
     try{
-      let PokemonAll = this.pokemonModel.find().limit(queryParams.limit).skip(queryParams.offset).sort({no:1}).select('-__v');
+      // let PokemonAll = this.pokemonModel.find().limit(queryParams.limit).skip(queryParams.offset).sort({no:1}).select('-__v');
+      let PokemonAll = this.pokemonModel.find().limit(limit).skip(offset).sort({no:1}).select('-__v');
       if(!PokemonAll){
         throw new NotFoundException('No Pokemon found');
       };

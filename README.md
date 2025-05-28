@@ -3,7 +3,11 @@
 </p>
 
 # Ejecutar en desarrollo
+
 1. Clonar el repositorio
+```
+git clone Ruta  
+```
 2. Ejecutar 
 ```
 yarn install 
@@ -16,6 +20,19 @@ npm i -g @nestjs/cli
 ```
 docker-compose up -d 
 ```
+
+5. Clonar el archivo __.env.template__  y renombrar la copia __.env__
+
+6. llenar las variables definidas en el __.env__
+
+7. Ejecutar la app con el comando:
+```
+yarn start:dev
+```
+8. Reconstruir la base de datos con la semilla
+```
+htpp://localhost:{puerto}/api/v1/seed
+```
 ### Stack usado
 * MongoDB
-* Nest 
+* Nest Js
