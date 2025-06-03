@@ -8,30 +8,27 @@
 ```
 git clone Ruta  
 ```
-2. Ejecutar 
-```
-yarn install 
-```
-3. Tener Nest CLI instalado
+2. Tener Nest CLI instalado
 ```
 npm i -g @nestjs/cli
 ```
-4. Levantar la base de datos
+3. Clonar el archivo __.env.template__  y renombrar la copia __.env__ y otro con el nombre de __.env.prod__ 
+
+4. llenar las variables definidas en el __.env__ y __.env.prod__
+
+5. Ejecutar para crear los dos contenedores base de datos y el proyecto
 ```
-docker-compose up -d 
+docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build 
 ```
 
-5. Clonar el archivo __.env.template__  y renombrar la copia __.env__
+6. Si ya lo tienes creado y los has detenido para levantarlo de nuevo usa 
+```
+docker-compose -f docker-compose.prod.yaml --env-file .env.prod up -d
+```
 
-6. llenar las variables definidas en el __.env__
-
-7. Ejecutar la app con el comando:
+6. Reconstruir la base de datos con la semilla
 ```
-yarn start:dev
-```
-8. Reconstruir la base de datos con la semilla
-```
-htpp://localhost:{puerto}/api/v1/seed
+http://localhost:{puerto}/api/v1/seed
 ```
 ### Stack usado
 * MongoDB
